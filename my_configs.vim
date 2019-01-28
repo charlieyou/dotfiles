@@ -15,8 +15,8 @@ set colorcolumn=80
 nnoremap j gj
 nnoremap k gk
 
-nmap B ^
-nmap E $
+noremap B ^
+noremap E $
 
 nnoremap <silent> <Leader>= :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
