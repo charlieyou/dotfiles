@@ -1,7 +1,7 @@
 export TERM="xterm-256color"
-export ZSH="/Users/charlieyou/.oh-my-zsh"
+export ZSH="/Users/charlie.you/.oh-my-zsh"
 
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 HYPHEN_INSENSITIVE="true"
 DISABLE_LS_COLORS="true"
@@ -12,6 +12,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 plugins=(
   git
+  zsh-syntax-highlighting
+  zsh-autosuggestions
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -35,8 +37,6 @@ prompt_context() {
 }
 
 export WORKON_HOME=~/Envs
-source /usr/local/bin/virtualenvwrapper.sh
 
-alias mkvirtualenv="mkvirtualenv --python=`which python3`"
-
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+export PATH=$PATH:/Users/charlie.you/Library/Python/3.7/bin
+eval "$(pyenv virtualenv-init -)"
