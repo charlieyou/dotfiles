@@ -11,6 +11,10 @@ bindkey '^E' autosuggest-accept  # Ctrl+E accepts full suggestion
 # Syntax highlighting (colorizes commands as you type)
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+# Auto-pair parentheses, quotes, brackets
+source /usr/local/share/zsh-autopair/autopair.zsh
+autopair-init
+
 # Better completion system
 autoload -Uz compinit && compinit
 zstyle ':completion:*' menu select
