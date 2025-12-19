@@ -1,0 +1,39 @@
+macos-titlebar-style = tabs
+theme = Builtin Pastel Dark
+font-size = 14
+
+# Window behavior
+window-save-state = always
+window-padding-x = 10
+window-padding-y = 10
+
+# Cursor
+cursor-style = block
+cursor-style-blink = false
+
+# Mouse
+copy-on-select = clipboard
+mouse-scroll-multiplier = 2
+
+# Shell integration
+shell-integration-features = cursor,sudo,title
+
+# Tab switching (Option + number)
+keybind = cmd+one=unbind
+keybind = cmd+two=unbind
+keybind = cmd+three=unbind
+keybind = cmd+four=unbind
+keybind = cmd+five=unbind
+keybind = cmd+six=unbind
+keybind = cmd+seven=unbind
+keybind = cmd+eight=unbind
+keybind = cmd+nine=unbind
+keybind = opt+one=goto_tab:1
+keybind = opt+two=goto_tab:2
+keybind = opt+three=goto_tab:3
+keybind = opt+four=goto_tab:4
+keybind = opt+five=goto_tab:5
+keybind = opt+six=goto_tab:6
+keybind = opt+seven=goto_tab:7
+keybind = opt+eight=goto_tab:8
+keybind = opt+nine=goto_tab:9
