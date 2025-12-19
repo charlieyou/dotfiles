@@ -1,6 +1,6 @@
 macos-titlebar-style = tabs
 theme = Builtin Pastel Dark
-font-size = 14
+font-size = 16
 
 # Window behavior
 window-save-state = always

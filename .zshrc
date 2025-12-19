@@ -1,18 +1,21 @@
+# Use HOMEBREW_PREFIX set by machine-specific ~/.zshrc
+: ${HOMEBREW_PREFIX:=/usr/local}
+
 # Starship prompt (modern, fast, customizable)
 eval "$(starship init zsh)"
 
 # Autosuggestions (fish-like, shows history as you type)
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 bindkey '^[[C' forward-char  # Right arrow accepts character
 bindkey '^E' autosuggest-accept  # Ctrl+E accepts full suggestion
 
 # Syntax highlighting (colorizes commands as you type)
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Auto-pair parentheses, quotes, brackets
-source /usr/local/share/zsh-autopair/autopair.zsh
+source $HOMEBREW_PREFIX/share/zsh-autopair/autopair.zsh
 autopair-init
 
 # Better completion system
