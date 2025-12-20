@@ -1,3 +1,7 @@
+call plug#begin()
+Plug 'christoomey/vim-tmux-navigator'
+call plug#end()
+
 let g:solarized_termtrans=1
 
 imap jk <Esc>
