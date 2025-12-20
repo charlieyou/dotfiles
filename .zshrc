@@ -14,9 +14,8 @@ bindkey '^E' autosuggest-accept  # Ctrl+E accepts full suggestion
 # Syntax highlighting (colorizes commands as you type)
 source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# Auto-pair parentheses, quotes, brackets
-source $HOMEBREW_PREFIX/share/zsh-autopair/autopair.zsh
-autopair-init
+# Auto-pair parentheses, quotes, brackets (sourced in main .zshrc if not via Homebrew)
+[[ -f $HOMEBREW_PREFIX/share/zsh-autopair/autopair.zsh ]] && source $HOMEBREW_PREFIX/share/zsh-autopair/autopair.zsh && autopair-init
 
 # Better completion system
 autoload -Uz compinit && compinit
@@ -25,7 +24,8 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'  # Case insensitive
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # fzf integration (fuzzy finder for history with Ctrl+R)
-source <(fzf --zsh)
+# Sourced via ~/.fzf.zsh if installed via git, or inline if in PATH
+command -v fzf &>/dev/null && source <(fzf --zsh)
 
 # Better history
 HISTSIZE=50000
@@ -39,3 +39,9 @@ setopt HIST_IGNORE_SPACE
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^X^E' edit-command-line
+
+alias clauded="claude --dangerously-skip-permissions"
+
+alias gs="git status"
+alias gp="git push"
+alias gc="git commit"
