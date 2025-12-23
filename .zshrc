@@ -41,6 +41,7 @@ zle -N edit-command-line
 bindkey '^X^E' edit-command-line
 
 alias clauded="claude --dangerously-skip-permissions"
+alias codexd="codex --dangerously-bypass-approvals-and-sandbox"
 
 alias gs="git status"
 alias gp="git push"
