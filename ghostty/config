@@ -1,6 +1,7 @@
 macos-titlebar-style = tabs
 theme = Builtin Pastel Dark
 font-size = 16
+desktop-notifications = true
 
 # Window behavior
 window-save-state = always
@@ -14,6 +15,10 @@ cursor-style-blink = false
 # Mouse
 copy-on-select = clipboard
 mouse-scroll-multiplier = 2
+
+# Allow OSC 52 clipboard from remote (SSH)
+clipboard-read = allow
+clipboard-write = allow
 
 # Shell integration
 shell-integration-features = cursor,sudo,title
