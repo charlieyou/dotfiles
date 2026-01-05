@@ -1,0 +1,20 @@
+#!/bin/sh
+# Copies stdin to system clipboard via OSC 52, works inside tmux over SSH
+# Usage: echo "text" | yank
+#    or: echo "text" | yank > /dev/pts/X  (for tmux copy-pipe)
+
+# Read all input from stdin
+input=$(cat)
+
+# Also copy to tmux buffer
+test -n "$TMUX" && printf '%s' "$input" | tmux load-buffer - 2>/dev/null
+
+# Build OSC 52 escape sequence
+buf=$(printf '%s' "$input" | head -c 74994 | base64 | tr -d '\r\n')
+
+# Wrap in Ptmux passthrough if inside tmux, output to stdout (caller redirects)
+if test -n "$TMUX"; then
+  printf '\ePtmux;\e\e]52;c;%s\a\e\\' "$buf"
+else
+  printf '\e]52;c;%s\a' "$buf"
+fi
