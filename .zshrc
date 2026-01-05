@@ -31,7 +31,7 @@ command -v fzf &>/dev/null && source <(fzf --zsh)
 HISTSIZE=50000
 SAVEHIST=50000
 HISTFILE=~/.zsh_history
-setopt SHARE_HISTORY
+setopt APPEND_HISTORY
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 
@@ -46,3 +46,5 @@ alias codexd="codex --dangerously-bypass-approvals-and-sandbox"
 alias gs="git status"
 alias gp="git push"
 alias gc="git commit"
+
+alias vim="nvim"
