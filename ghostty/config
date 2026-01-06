@@ -34,9 +34,6 @@ keybind = cmd+eight=unbind
 keybind = cmd+nine=unbind
 keybind = cmd+zero=unbind
 
-# Fix Shift+` outputting escape sequences instead of tilde
-keybind = shift+grave_accent=text:~
-
 macos-option-as-alt = true
 
 window-decoration = true
