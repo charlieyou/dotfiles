@@ -46,3 +46,5 @@ alias codexd="codex --dangerously-bypass-approvals-and-sandbox"
 alias vim="nvim"
 
 WORDCHARS=''
+
+alias gs="git status"
