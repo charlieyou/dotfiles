@@ -7,6 +7,7 @@ ZSH_THEME=""  # Disabled - using Starship instead
 
 # Plugins (loaded via Oh My Zsh)
 plugins=(
+  git
   zsh-autosuggestions
   zsh-completions
   zsh-syntax-highlighting
@@ -41,10 +42,6 @@ bindkey '^X^E' edit-command-line
 
 alias clauded="claude --dangerously-skip-permissions"
 alias codexd="codex --dangerously-bypass-approvals-and-sandbox"
-
-alias gs="git status"
-alias gp="git push"
-alias gc="git commit"
 
 alias vim="nvim"
 
