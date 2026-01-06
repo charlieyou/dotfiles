@@ -8,6 +8,7 @@ ZSH_THEME=""  # Disabled - using Starship instead
 # Plugins (loaded via Oh My Zsh)
 plugins=(
   zsh-autosuggestions
+  zsh-completions
   zsh-syntax-highlighting
   zsh-shift-select
   zsh-autopair
