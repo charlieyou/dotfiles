@@ -48,3 +48,5 @@ alias gp="git push"
 alias gc="git commit"
 
 alias vim="nvim"
+
+WORDCHARS=''
