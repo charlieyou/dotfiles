@@ -18,8 +18,7 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-# Starship prompt (modern, fast, customizable)
-eval "$(starship init zsh)"
+# Starship prompt - init moved to end of ~/.zshrc (after PATH is set)
 
 # Autosuggestions config
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'

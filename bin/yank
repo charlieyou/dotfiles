@@ -10,7 +10,7 @@ input=$(cat)
 test -n "$TMUX" && printf '%s' "$input" | tmux load-buffer - 2>/dev/null
 
 # Build OSC 52 escape sequence
-buf=$(printf '%s' "$input" | head -c 74994 | base64 | tr -d '\r\n')
+buf=$(printf '%s' "$input" | base64 | tr -d '\r\n')
 
 # Wrap in Ptmux passthrough if inside tmux, output to stdout (caller redirects)
 if test -n "$TMUX"; then
