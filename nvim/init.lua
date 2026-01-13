@@ -12,16 +12,18 @@ vim.opt.rtp:prepend(lazypath)
 -- Enable true colors
 vim.opt.termguicolors = true
 
--- Hybrid clipboard: OSC 52 for copy (works over SSH), xclip for paste (no blocking)
+-- OSC 52 for system clipboard copy (works over SSH), paste uses internal register
+local osc52 = require('vim.ui.clipboard.osc52')
+local last_yanked = {}
 vim.g.clipboard = {
-  name = 'OSC 52 + xclip',
+  name = 'OSC 52',
   copy = {
-    ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
-    ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+    ['+'] = function(lines) last_yanked = lines; osc52.copy('+')(lines) end,
+    ['*'] = function(lines) last_yanked = lines; osc52.copy('*')(lines) end,
   },
   paste = {
-    ['+'] = function() return vim.fn.systemlist('xclip -selection clipboard -o') end,
-    ['*'] = function() return vim.fn.systemlist('xclip -selection primary -o') end,
+    ['+'] = function() return last_yanked end,
+    ['*'] = function() return last_yanked end,
   },
 }
 
