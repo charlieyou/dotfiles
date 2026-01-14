@@ -41,3 +41,5 @@ export EDITOR="nvim"
 WORDCHARS=''
 
 alias gs="git status"
+
+eval "$(starship init zsh)"
