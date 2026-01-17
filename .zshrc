@@ -30,6 +30,7 @@ HISTFILE=~/.zsh_history
 setopt APPEND_HISTORY
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
+unsetopt share_history
 
 alias clauded="claude --dangerously-skip-permissions"
 alias codexd="codex --dangerously-bypass-approvals-and-sandbox"
