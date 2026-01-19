@@ -25,20 +25,21 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- [[ Custom: OSC 52 clipboard for SSH ]]
+-- [[ Custom: clipboard for SSH ]]
 vim.opt.termguicolors = true
-local osc52 = require("vim.ui.clipboard.osc52")
+
+-- Use yank script for system clipboard (works through tmux)
 local last_yanked = {}
 vim.g.clipboard = {
-  name = "OSC 52",
+  name = "yank",
   copy = {
     ["+"] = function(lines)
       last_yanked = lines
-      osc52.copy("+")(lines)
+      vim.fn.system("yank", lines)
     end,
     ["*"] = function(lines)
       last_yanked = lines
-      osc52.copy("*")(lines)
+      vim.fn.system("yank", lines)
     end,
   },
   paste = {
