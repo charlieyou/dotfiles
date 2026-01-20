@@ -25,22 +25,43 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- [[ Custom: clipboard for SSH ]]
+-- [[ Custom: clipboard for SSH via yank script ]]
 vim.opt.termguicolors = true
 
--- Use yank script for system clipboard (works through tmux)
+-- Use OSC 52 for system clipboard (works through tmux over SSH)
+-- Stores last yank locally for paste within same nvim session
 local last_yanked = {}
+
+local function yank_to_clipboard(lines)
+  last_yanked = lines
+  local text = table.concat(lines, "\n")
+  local b64 = vim.base64.encode(text)
+
+  -- Build OSC 52 sequence with tmux passthrough wrapper
+  local osc52
+  if vim.env.TMUX then
+    osc52 = string.format("\027Ptmux;\027\027]52;c;%s\a\027\\", b64)
+    -- Get the pane TTY from tmux and write directly to it
+    local pane_tty = vim.fn.system("tmux display-message -p '#{pane_tty}'"):gsub("%s+$", "")
+    if pane_tty ~= "" then
+      local f = io.open(pane_tty, "w")
+      if f then
+        f:write(osc52)
+        f:close()
+        return
+      end
+    end
+  else
+    osc52 = string.format("\027]52;c;%s\a", b64)
+    io.stderr:write(osc52)
+  end
+end
+
 vim.g.clipboard = {
   name = "yank",
   copy = {
-    ["+"] = function(lines)
-      last_yanked = lines
-      vim.fn.system("yank", lines)
-    end,
-    ["*"] = function(lines)
-      last_yanked = lines
-      vim.fn.system("yank", lines)
-    end,
+    ["+"] = yank_to_clipboard,
+    ["*"] = yank_to_clipboard,
   },
   paste = {
     ["+"] = function()
@@ -69,12 +90,9 @@ vim.o.mouse = "a"
 vim.o.showmode = false
 
 -- Sync clipboard between OS and Neovim.
--- Schedule the setting after `UiEnter` because it can increase startup-time.
--- Remove this option if you want your OS clipboard to remain independent.
+-- Uses the custom vim.g.clipboard provider defined above (yank script).
 -- See `:help 'clipboard'`
-vim.schedule(function()
-  vim.o.clipboard = "unnamedplus"
-end)
+vim.o.clipboard = "unnamedplus"
 
 -- Enable break indent
 vim.o.breakindent = true
