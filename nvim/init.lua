@@ -25,53 +25,57 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- [[ Custom: clipboard for SSH via yank script ]]
+-- [[ Custom: clipboard for SSH ]]
 vim.opt.termguicolors = true
 
--- Use OSC 52 for system clipboard (works through tmux over SSH)
--- Stores last yank locally for paste within same nvim session
-local last_yanked = {}
+-- Only override clipboard when we're in an SSH session.
+-- Locally on Mac, let Neovim auto-detect pbcopy/pbpaste.
+if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
+  -- Use OSC 52 for system clipboard (works through tmux over SSH)
+  -- Stores last yank locally for paste within same nvim session
+  local last_yanked = {}
 
-local function yank_to_clipboard(lines)
-  last_yanked = lines
-  local text = table.concat(lines, "\n")
-  local b64 = vim.base64.encode(text)
+  local function yank_to_clipboard(lines)
+    last_yanked = lines
+    local text = table.concat(lines, "\n")
+    local b64 = vim.base64.encode(text)
 
-  -- Build OSC 52 sequence with tmux passthrough wrapper
-  local osc52
-  if vim.env.TMUX then
-    osc52 = string.format("\027Ptmux;\027\027]52;c;%s\a\027\\", b64)
-    -- Get the pane TTY from tmux and write directly to it
-    local pane_tty = vim.fn.system("tmux display-message -p '#{pane_tty}'"):gsub("%s+$", "")
-    if pane_tty ~= "" then
-      local f = io.open(pane_tty, "w")
-      if f then
-        f:write(osc52)
-        f:close()
-        return
+    -- Build OSC 52 sequence with tmux passthrough wrapper
+    local osc52
+    if vim.env.TMUX then
+      osc52 = string.format("\027Ptmux;\027\027]52;c;%s\a\027\\", b64)
+      -- Get the pane TTY from tmux and write directly to it
+      local pane_tty = vim.fn.system("tmux display-message -p '#{pane_tty}'"):gsub("%s+$", "")
+      if pane_tty ~= "" then
+        local f = io.open(pane_tty, "w")
+        if f then
+          f:write(osc52)
+          f:close()
+          return
+        end
       end
+    else
+      osc52 = string.format("\027]52;c;%s\a", b64)
+      io.stderr:write(osc52)
     end
-  else
-    osc52 = string.format("\027]52;c;%s\a", b64)
-    io.stderr:write(osc52)
   end
-end
 
-vim.g.clipboard = {
-  name = "yank",
-  copy = {
-    ["+"] = yank_to_clipboard,
-    ["*"] = yank_to_clipboard,
-  },
-  paste = {
-    ["+"] = function()
-      return last_yanked
-    end,
-    ["*"] = function()
-      return last_yanked
-    end,
-  },
-}
+  vim.g.clipboard = {
+    name = "yank-osc52",
+    copy = {
+      ["+"] = yank_to_clipboard,
+      ["*"] = yank_to_clipboard,
+    },
+    paste = {
+      ["+"] = function()
+        return last_yanked
+      end,
+      ["*"] = function()
+        return last_yanked
+      end,
+    },
+  }
+end
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -90,9 +94,12 @@ vim.o.mouse = "a"
 vim.o.showmode = false
 
 -- Sync clipboard between OS and Neovim.
--- Uses the custom vim.g.clipboard provider defined above (yank script).
+-- Schedule the setting after `UiEnter` because it can increase startup-time.
+-- Remove this option if you want your OS clipboard to remain independent.
 -- See `:help 'clipboard'`
-vim.o.clipboard = "unnamedplus"
+vim.schedule(function()
+  vim.o.clipboard = "unnamedplus"
+end)
 
 -- Enable break indent
 vim.o.breakindent = true
