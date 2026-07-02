@@ -35,6 +35,7 @@ keybind = cmd+nine=unbind
 keybind = cmd+zero=unbind
 
 macos-option-as-alt = true
+keybind = alt+enter=csi:13;3u
 
 window-decoration = true
 macos-titlebar-style = tabs
